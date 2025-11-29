@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1:3306
--- Generation Time: Nov 28, 2025 at 05:42 PM
+-- Generation Time: Nov 29, 2025 at 07:57 AM
 -- Server version: 11.8.3-MariaDB-log
 -- PHP Version: 7.2.34
 
@@ -68,8 +68,7 @@ INSERT INTO `plans` (`id`, `name`, `daily_percent`, `days`, `min_amount`, `max_a
 (10, 'Plano 5000 Reais', 5.00, 50, 5000.00, 5000.00, NULL),
 (11, 'Plano 7000 Reais', 5.00, 50, 7000.00, 7000.00, NULL),
 (12, 'Plano 9000 Reais', 4.44, 50, 9000.00, 9000.00, NULL),
-(13, 'Plano 15000 Reais', 6.67, 30, 15000.00, 15000.00, NULL),
-(14, '', 0.00, 0, 0.00, 0.00, NULL);
+(13, 'Plano 15000 Reais', 6.67, 30, 15000.00, 15000.00, NULL);
 
 -- --------------------------------------------------------
 
@@ -117,7 +116,11 @@ INSERT INTO `settings` (`id`, `setting_key`, `setting_value`, `description`) VAL
 (26, 'color_btn_text', '#ffffff', 'Configuração Automática'),
 (27, 'color_success', '#00ff04', 'Configuração Automática'),
 (28, 'color_danger', '#fa0000', 'Configuração Automática'),
-(29, 'color_warning', '#fff700', 'Configuração Automática');
+(29, 'color_warning', '#fff700', 'Configuração Automática'),
+(30, 'crypto_btc_price', '65000.00', 'Preço fictício Bitcoin'),
+(31, 'crypto_eth_price', '3500.00', 'Preço fictício Ethereum'),
+(32, 'crypto_bnb_price', '600.00', 'Preço fictício BNB'),
+(33, 'color_secondary_light', '#00b4d8', 'Cor Secundária Light (Fundo de Cards)');
 
 -- --------------------------------------------------------
 
@@ -220,7 +223,14 @@ INSERT INTO `transactions` (`id`, `user_id`, `type`, `amount`, `status`, `descri
 (3, 3, 'deposit', 5000.00, 'approved', 'Aguardando Pagamento', '2025-11-27 18:45:42'),
 (4, 3, 'investment_buy', 0.00, 'approved', 'Compra: ', '2025-11-28 15:37:46'),
 (5, 3, 'investment_buy', 500.00, 'approved', 'Compra: Plano 500 Reais', '2025-11-28 16:03:35'),
-(6, 3, 'investment_buy', 200.00, 'approved', 'Compra: Plano 200 Reais', '2025-11-28 16:17:15');
+(6, 3, 'investment_buy', 200.00, 'approved', 'Compra: Plano 200 Reais', '2025-11-28 16:17:15'),
+(7, 3, 'investment_buy', 200.00, 'approved', 'Plano: Plano 200 Reais', '2025-11-28 20:13:48'),
+(8, 3, 'investment_buy', 700.00, 'approved', 'Plano: Plano 700 Reais', '2025-11-28 20:13:52'),
+(9, 3, 'investment_buy', 500.00, 'approved', 'Plano: Plano 500 Reais', '2025-11-28 20:13:54'),
+(10, 3, 'investment_return', 20.00, 'approved', 'Resgate Diário', '2025-11-29 00:38:39'),
+(11, 3, 'investment_return', 40.00, 'approved', 'Resgate Diário', '2025-11-29 00:38:47'),
+(12, 3, 'investment_return', 30.03, 'approved', 'Resgate Diário', '2025-11-29 00:40:34'),
+(13, 3, 'investment_return', 40.00, 'approved', 'Resgate Diário', '2025-11-29 00:40:43');
 
 -- --------------------------------------------------------
 
@@ -241,19 +251,20 @@ CREATE TABLE `users` (
   `referrer_id` int(11) DEFAULT NULL,
   `pix_key_type` varchar(20) DEFAULT NULL,
   `pix_key` varchar(255) DEFAULT NULL,
-  `created_at` timestamp NULL DEFAULT current_timestamp()
+  `created_at` timestamp NULL DEFAULT current_timestamp(),
+  `withdrawal_password` varchar(255) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 --
 -- Dumping data for table `users`
 --
 
-INSERT INTO `users` (`id`, `name`, `email`, `password`, `whatsapp`, `cpf`, `username`, `role`, `balance`, `referrer_id`, `pix_key_type`, `pix_key`, `created_at`) VALUES
-(1, 'Admin 1', 'admin@admin.com', '$2y$10$N03kx64nYreCys7boNz2gOtbD5X3jVKbSozCKrk6VehWeSq5NPHYm', NULL, NULL, NULL, 'admin', 0.00, NULL, NULL, NULL, '2025-11-27 17:36:52'),
-(2, 'Admin 2', 'admin1@admin1.com', '$2y$10$ThK.w/e.g.s.t.a.v.o.ThK.w/e.g.s.t.a.v.o.ThK.w/e.g.s.t.a.v.o', NULL, NULL, NULL, 'admin', 0.00, NULL, NULL, NULL, '2025-11-27 17:36:52'),
-(3, 'Renato Gomes da Conceição Júnior', 'r3nato90@hotmail.com', '$2y$10$LLzimf02yYe5JeLtNjhRzuibekpmpnT319dl1AfmT1t/1q62Wng7u', '84999032426', '08415755414', 'r3nato90', 'user', 6100.00, NULL, NULL, 'renato@4lifeidiomas.com', '2025-11-27 18:33:03'),
-(4, 'geremias', 'geremiasalferdo@gmail.com', '$2y$10$Q0pRvN21QffWGh1LZQr./ez7oDEW4R9fLQ3Hc4KmHnxLFLauSERgO', '3232323232', '390.139.430-39', 'opadada', 'user', 0.00, NULL, 'cpf', '323232233232', '2025-11-27 20:09:38'),
-(6, 'Gustavo henrique', 'gustavo@gmail.com', '$2y$10$fKqvDucPP.YH8SIz8BGWC.AVYRMnhzgbawwgm73JKslqR7zrr4Wpi', '73883828288', NULL, NULL, 'user', 0.00, NULL, NULL, NULL, '2025-11-28 15:34:37');
+INSERT INTO `users` (`id`, `name`, `email`, `password`, `whatsapp`, `cpf`, `username`, `role`, `balance`, `referrer_id`, `pix_key_type`, `pix_key`, `created_at`, `withdrawal_password`) VALUES
+(1, 'Admin 1', 'admin@admin.com', '$2y$10$Ut3lOFJKJBUdpSjl.9/oWetyFTouoIBsWPdYdSjKhFZwasLHKl81m', NULL, NULL, NULL, 'admin', 0.00, NULL, NULL, NULL, '2025-11-27 17:36:52', NULL),
+(2, 'Admin 2', 'admin1@admin1.com', '$2y$10$ThK.w/e.g.s.t.a.v.o.ThK.w/e.g.s.t.a.v.o.ThK.w/e.g.s.t.a.v.o', NULL, NULL, NULL, 'admin', 0.00, NULL, NULL, NULL, '2025-11-27 17:36:52', NULL),
+(3, 'Renato Gomes da Conceição Júnior', 'r3nato90@hotmail.com', '$2y$10$LLzimf02yYe5JeLtNjhRzuibekpmpnT319dl1AfmT1t/1q62Wng7u', '84999032426', '08415755414', 'r3nato90', 'user', 4830.03, NULL, NULL, 'renato@4lifeidiomas.com', '2025-11-27 18:33:03', NULL),
+(4, 'geremias', 'geremiasalferdo@gmail.com', '$2y$10$Q0pRvN21QffWGh1LZQr./ez7oDEW4R9fLQ3Hc4KmHnxLFLauSERgO', '3232323232', '390.139.430-39', 'opadada', 'user', 0.00, NULL, 'cpf', '323232233232', '2025-11-27 20:09:38', NULL),
+(6, 'Gustavo henrique', 'gustavo@gmail.com', '$2y$10$fKqvDucPP.YH8SIz8BGWC.AVYRMnhzgbawwgm73JKslqR7zrr4Wpi', '73883828288', NULL, NULL, 'user', 0.00, NULL, NULL, NULL, '2025-11-28 15:34:37', NULL);
 
 -- --------------------------------------------------------
 
@@ -270,18 +281,21 @@ CREATE TABLE `user_investments` (
   `total_return` decimal(15,2) NOT NULL,
   `start_date` date NOT NULL,
   `end_date` date NOT NULL,
-  `status` enum('active','completed') DEFAULT 'active'
+  `status` enum('active','completed') DEFAULT 'active',
+  `last_claim_date` date DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 --
 -- Dumping data for table `user_investments`
 --
 
-INSERT INTO `user_investments` (`id`, `user_id`, `plan_id`, `amount`, `daily_return`, `total_return`, `start_date`, `end_date`, `status`) VALUES
-(1, 3, 2, 400.00, 30.00, 900.00, '2025-11-27', '2025-12-27', 'active'),
-(2, 3, 14, 0.00, 0.00, 0.00, '2025-11-28', '2025-11-28', 'active'),
-(3, 3, 3, 500.00, 40.00, 1200.00, '2025-11-28', '2025-12-28', 'active'),
-(4, 3, 1, 200.00, 20.00, 600.00, '2025-11-28', '2025-12-28', 'active');
+INSERT INTO `user_investments` (`id`, `user_id`, `plan_id`, `amount`, `daily_return`, `total_return`, `start_date`, `end_date`, `status`, `last_claim_date`) VALUES
+(1, 3, 2, 400.00, 30.00, 900.00, '2025-11-27', '2025-12-27', 'active', NULL),
+(3, 3, 3, 500.00, 40.00, 1200.00, '2025-11-28', '2025-12-28', 'active', '2025-11-28'),
+(4, 3, 1, 200.00, 20.00, 600.00, '2025-11-28', '2025-12-28', 'active', NULL),
+(5, 3, 1, 200.00, 20.00, 600.00, '2025-11-28', '2025-12-28', 'active', '2025-11-28'),
+(6, 3, 4, 700.00, 30.03, 1801.80, '2025-11-28', '2026-01-27', 'active', '2025-11-28'),
+(7, 3, 3, 500.00, 40.00, 1200.00, '2025-11-28', '2025-12-28', 'active', '2025-11-28');
 
 --
 -- Indexes for dumped tables
@@ -377,7 +391,7 @@ ALTER TABLE `plans`
 -- AUTO_INCREMENT for table `settings`
 --
 ALTER TABLE `settings`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=30;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=34;
 
 --
 -- AUTO_INCREMENT for table `site_banners`
@@ -407,7 +421,7 @@ ALTER TABLE `ticket_messages`
 -- AUTO_INCREMENT for table `transactions`
 --
 ALTER TABLE `transactions`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=14;
 
 --
 -- AUTO_INCREMENT for table `users`
@@ -419,7 +433,7 @@ ALTER TABLE `users`
 -- AUTO_INCREMENT for table `user_investments`
 --
 ALTER TABLE `user_investments`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
 
 --
 -- Constraints for dumped tables

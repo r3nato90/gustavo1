@@ -87,7 +87,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         }
     }
     
-    // --- RECUPERAÇÃO DE SENHA ---
+    // --- RECUPERAÇÃO DE SENHA DE ACESSO ---
     if ($action === 'recover') {
         $email = $_POST['email'];
         $name = $_POST['name'];
@@ -98,9 +98,33 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         if ($stmt->fetch()) {
              $hash = password_hash($new_pass, PASSWORD_DEFAULT);
              $pdo->prepare("UPDATE users SET password = ? WHERE email = ?")->execute([$hash, $email]);
-             echo "Senha alterada com sucesso! <a href='index.php'>Login</a>";
+             echo "Senha de acesso alterada com sucesso! <a href='index.php'>Login</a>";
         } else {
             echo "Dados não conferem.";
+        }
+    }
+
+    // --- DEFINIR SENHA DE SAQUE (PÁGINA DEDICADA) ---
+    if ($action === 'set_withdrawal_pass') {
+        $password = $_POST['withdrawal_password'];
+        $confirm_password = $_POST['confirm_withdrawal_password'];
+        $user_id = $_SESSION['user_id'];
+        
+        if ($password !== $confirm_password) {
+            die("As senhas não conferem. <a href='dashboard.php?page=withdraw_pass'>Voltar</a>");
+        }
+        if (!preg_match('/^\d{6}$/', $password)) {
+             die("A senha de saque deve ser numérica e ter 6 dígitos. <a href='dashboard.php?page=withdraw_pass'>Voltar</a>");
+        }
+        
+        $hash = password_hash($password, PASSWORD_DEFAULT);
+        
+        try {
+            $pdo->prepare("UPDATE users SET withdrawal_password = ? WHERE id = ?")->execute([$hash, $user_id]);
+            header("Location: dashboard.php?page=withdraw");
+            exit;
+        } catch (Exception $e) {
+            die("Erro ao salvar senha de saque. <a href='dashboard.php?page=withdraw_pass'>Voltar</a>");
         }
     }
 }
